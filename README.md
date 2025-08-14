@@ -126,21 +126,51 @@ src/main/java/com/fiap/atividade3/
 
 #### 🔥 Exemplos Práticos de Teste
 
-##### 1. Listar Usuários Existentes
+##### 1. 🔐 Login (OBRIGATÓRIO PRIMEIRO)
+```graphql
+mutation {
+  login(input: {
+    email: "joao.silva@hospital.com"
+    senha: "senha123"
+  }) {
+    token
+    usuario {
+      nome
+      role
+    }
+  }
+}
+```
+
+**⚠️ IMPORTANTE**: Após fazer login, copie o `token` e configure no cabeçalho:
+```json
+{
+  "Authorization": "Bearer SEU_TOKEN_AQUI"
+}
+```
+
+**👥 Usuários de Teste Disponíveis:**
+- **Médicos**: `joao.silva@hospital.com`, `maria.santos@hospital.com`
+- **Enfermeiros**: `ana.costa@hospital.com`, `carlos.oliveira@hospital.com`  
+- **Pacientes**: `jose.pereira@email.com`, `maria.fernanda@email.com`
+- **Senha padrão**: `senha123`
+
+##### 2. 👥 Listar Médicos (🔒 Requer Token)
 ```graphql
 query {
-  usuarios {
+  medicos {
     id
     nome
     email
-    role
+    crm
+    especialidade
     active
     createdAt
   }
 }
 ```
 
-##### 2. Cadastrar um Novo Médico
+##### 3. ➕ Cadastrar um Novo Médico (🔒 Requer Token)
 ```graphql
 mutation {
   registrarMedico(input: {
@@ -179,11 +209,12 @@ mutation {
     setor
     role
     active
+    createdAt
   }
 }
 ```
 
-##### 4. Cadastrar um Novo Paciente
+##### 4. 🏥 Cadastrar um Novo Paciente (🔒 Requer Token)
 ```graphql
 mutation {
   registrarPaciente(input: {
@@ -207,25 +238,7 @@ mutation {
 }
 ```
 
-##### 5. Fazer Login
-```graphql
-mutation {
-  login(input: {
-    email: "pedro.almeida@hospital.com"
-    senha: "senha123"
-  }) {
-    token
-    usuario {
-      id
-      nome
-      email
-      role
-    }
-  }
-}
-```
-
-##### 6. Listar Médicos
+##### 5. 📋 Listar Médicos (🔒 Requer Token)
 ```graphql
 query {
   medicos {
@@ -313,32 +326,16 @@ A aplicação carrega automaticamente dados de exemplo na inicialização:
 
 ### 🧪 Como Testar com Dados Existentes
 
-1. **Faça login com um usuário existente**:
-```graphql
-mutation {
-  login(input: {
-    email: "joao.silva@hospital.com"
-    senha: "senha123"
-  }) {
-    token
-    usuario {
-      id
-      nome
-      email
-      role
-    }
-  }
-}
-```
-
+1. **Use o login do exemplo 1** com qualquer usuário de teste
 2. **Liste os dados existentes**:
 ```graphql
 query {
-  usuarios {
+  medicos {
     id
     nome
     email
-    role
+    crm
+    especialidade
   }
 }
 ```
