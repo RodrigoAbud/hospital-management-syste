@@ -1,0 +1,175 @@
+# GraphQL Schema for Hospital Management System
+
+# Enums
+enum UserRole {
+    MEDICO
+    ENFERMEIRO
+    PACIENTE
+}
+
+# Input types for mutations
+input LoginInput {
+    email: String!
+    senha: String!
+}
+
+input ConsultaInput {
+    dataConsulta: String!
+    motivo: String!
+    pacienteId: ID!
+    medicoId: ID!
+    enfermeiroId: ID
+    diagnostico: String
+    prescricao: String
+    observacoes: String
+}
+
+input ConsultaUpdateInput {
+    diagnostico: String
+    prescricao: String
+    observacoes: String
+}
+
+input MedicoInput {
+    nome: String!
+    email: String!
+    senha: String!
+    crm: String!
+    especialidade: String!
+}
+
+input EnfermeiroInput {
+    nome: String!
+    email: String!
+    senha: String!
+    coren: String!
+    setor: String
+}
+
+input PacienteInput {
+    nome: String!
+    email: String!
+    senha: String!
+    cpf: String!
+    dataNascimento: String
+    telefone: String
+    endereco: String
+}
+
+# Types
+type Usuario {
+    id: ID!
+    nome: String!
+    email: String!
+    role: UserRole!
+    createdAt: String!
+    updatedAt: String
+    active: Boolean!
+}
+
+type Medico {
+    id: ID!
+    nome: String!
+    email: String!
+    role: UserRole!
+    crm: String!
+    especialidade: String!
+    consultas: [Consulta!]
+    createdAt: String!
+    updatedAt: String
+    active: Boolean!
+}
+
+type Enfermeiro {
+    id: ID!
+    nome: String!
+    email: String!
+    role: UserRole!
+    coren: String!
+    setor: String
+    consultasRegistradas: [Consulta!]
+    createdAt: String!
+    updatedAt: String
+    active: Boolean!
+}
+
+type Paciente {
+    id: ID!
+    nome: String!
+    email: String!
+    role: UserRole!
+    cpf: String!
+    dataNascimento: String
+    telefone: String
+    endereco: String
+    consultas: [Consulta!]
+    createdAt: String!
+    updatedAt: String
+    active: Boolean!
+}
+
+type Consulta {
+    id: ID!
+    dataConsulta: String!
+    motivo: String!
+    diagnostico: String
+    prescricao: String
+    observacoes: String
+    paciente: Paciente!
+    medico: Medico!
+    enfermeiro: Enfermeiro
+    createdAt: String!
+    updatedAt: String
+}
+
+type AuthPayload {
+    token: String!
+    usuario: Usuario!
+}
+
+# Queries
+type Query {
+    # Authentication
+    me: Usuario
+    
+    # Consultas - role-based access
+    consulta(id: ID!): Consulta
+    minhasConsultas: [Consulta!]
+    consultasPorPaciente(pacienteId: ID!): [Consulta!]
+    consultasPorMedico(medicoId: ID!): [Consulta!]
+    todasConsultas: [Consulta!]
+    consultasRecentes: [Consulta!]
+    consultasPorPeriodo(inicio: String!, fim: String!): [Consulta!]
+    
+    # Users - for medical staff only
+    medicos: [Medico!]
+    enfermeiros: [Enfermeiro!]
+    pacientes: [Paciente!]
+    
+    # Search
+    buscarMedicos(nome: String, especialidade: String): [Medico!]
+    buscarEnfermeiros(nome: String, setor: String): [Enfermeiro!]
+    buscarPacientes(nome: String): [Paciente!]
+}
+
+# Mutations
+type Mutation {
+    # Authentication
+    login(input: LoginInput!): AuthPayload!
+    
+    # User registration
+    registrarMedico(input: MedicoInput!): Medico!
+    registrarEnfermeiro(input: EnfermeiroInput!): Enfermeiro!
+    registrarPaciente(input: PacienteInput!): Paciente!
+    
+    # Consultation management
+    criarConsulta(input: ConsultaInput!): Consulta!
+    atualizarConsulta(id: ID!, input: ConsultaUpdateInput!): Consulta!
+    deletarConsulta(id: ID!): Boolean!
+}
+
+# Subscriptions for real-time updates
+type Subscription {
+    consultaCriada: Consulta!
+    consultaAtualizada: Consulta!
+}
