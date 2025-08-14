@@ -58,7 +58,7 @@ Este sistema foi projetado para gerenciar as operações básicas de um hospital
 - 🔗 **Todos os endpoints** usam o prefixo `/api`
 - 🔗 **GraphQL**: `http://localhost:8080/api/graphql`
 - 🔗 **GraphiQL**: `http://localhost:8080/api/graphiql`
-- 🔗 **Swagger**: `http://localhost:8080/api/swagger-ui/index.html`
+
 
 ## 🏗️ Arquitetura
 
@@ -110,7 +110,7 @@ src/main/java/com/fiap/atividade3/
 4. **Acesse a aplicação**
    - **GraphiQL (API Principal)**: `http://localhost:8080/api/graphiql`
    - **H2 Console (Banco de Dados)**: `http://localhost:8080/api/h2-console`
-   - ~~**Swagger UI**: Removido - Aplicação 100% GraphQL~~
+
 
 ## 🧪 Como Testar a API
 
@@ -276,18 +276,18 @@ query {
 - **Formatar Código**: `Ctrl+Shift+P`
 - **Histórico**: Seta para cima/baixo para navegar no histórico
 
-### 🚫 Swagger UI (Não Aplicável)
+### 🎯 API 100% GraphQL
 
-**⚠️ Esta aplicação usa arquitetura 100% GraphQL**
+**✅ Arquitetura moderna e unificada**
 
-- **Não há endpoints REST** - Todos os endpoints foram migrados para GraphQL
-- **Swagger UI está vazio** - Use o GraphiQL para explorar a API
 - **GraphiQL é a única interface** necessária para testar a API
+- **Documentação automática** integrada no GraphiQL
+- **Queries flexíveis** - você escolhe exatamente os campos que precisa
 
-**💡 Por que 100% GraphQL?**
+**💡 Vantagens do GraphQL:**
 - ✅ **API única e consistente**
-- ✅ **Queries flexíveis** (você escolhe os campos)
-- ✅ **Menos código duplicado**
+- ✅ **Menos requisições** (busca dados relacionados em uma query)
+- ✅ **Tipagem forte** com validação automática
 - ✅ **Documentação automática** no GraphiQL
 - ✅ **Melhor experiência de desenvolvimento**
 
