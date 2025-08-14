@@ -31,8 +31,8 @@ public class ConsultaService {
     @Autowired
     private MedicoRepository medicoRepository;
 
-    @Autowired
-    private AsyncMessagingService asyncMessagingService;
+    // @Autowired
+    // private AsyncMessagingService asyncMessagingService; // TEMPORARILY DISABLED
 
     /**
      * Create a new consultation (Enfermeiros can register consultations)
@@ -41,7 +41,7 @@ public class ConsultaService {
     public Consulta criarConsulta(Consulta consulta) {
         Consulta savedConsulta = consultaRepository.save(consulta);
         // Publish async event for consultation creation
-        asyncMessagingService.publishConsultaCreated(savedConsulta);
+        // asyncMessagingService.publishConsultaCreated(savedConsulta); // TEMPORARILY DISABLED
         return savedConsulta;
     }
 
@@ -58,7 +58,7 @@ public class ConsultaService {
             consulta.setObservacoes(consultaAtualizada.getObservacoes());
             Consulta savedConsulta = consultaRepository.save(consulta);
             // Publish async event for consultation update
-            asyncMessagingService.publishConsultaUpdated(savedConsulta);
+            // asyncMessagingService.publishConsultaUpdated(savedConsulta); // TEMPORARILY DISABLED
             return savedConsulta;
         }
         throw new RuntimeException("Consulta não encontrada");

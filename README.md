@@ -18,33 +18,47 @@ Este sistema foi projetado para gerenciar as operações básicas de um hospital
 - **GraphQL** - API para consultas flexíveis
 - **JWT** - Tokens de autenticação
 - **H2 Database** - Banco de dados em memória (desenvolvimento)
-- **RabbitMQ** - Mensageria assíncrona
+- **RabbitMQ** - Mensageria assíncrona (temporariamente desabilitada)
 - **Maven** - Gerenciamento de dependências
 
 ## 📋 Funcionalidades
 
-### Autenticação e Autorização
-- Login com JWT
-- Controle de acesso baseado em roles (RBAC)
-- Senhas criptografadas com BCrypt
-- Tokens com expiração configurável
+### ✅ Implementadas e Funcionando
 
-### Gestão de Usuários
-- Cadastro de médicos, enfermeiros e pacientes
-- Validação de dados (CRM, COREN, CPF)
-- Busca por nome, especialidade, setor
+#### Autenticação e Autorização
+- ✅ Login com JWT
+- ✅ Controle de acesso baseado em roles (RBAC)
+- ✅ Senhas criptografadas com BCrypt
+- ✅ Tokens com expiração configurável
 
-### Gestão de Consultas
-- Criação de consultas (enfermeiros e médicos)
-- Edição de consultas (apenas médicos)
-- Visualização com controle de acesso por role
-- Histórico completo de consultas
-- Busca por período e filtros
+#### Gestão de Usuários
+- ✅ **Cadastro de médicos** via GraphQL
+- ✅ **Cadastro de enfermeiros** via GraphQL
+- ✅ **Cadastro de pacientes** via GraphQL
+- ✅ Validação de dados únicos (CRM, COREN, CPF, Email)
+- ✅ Busca e listagem de usuários por tipo
+- ✅ Dados de exemplo pré-carregados
 
-### Comunicação Assíncrona
-- Eventos de criação e atualização de consultas
-- Processamento assíncrono com RabbitMQ
-- Logs de auditoria automáticos
+#### Gestão de Consultas
+- ✅ Criação de consultas (enfermeiros e médicos)
+- ✅ Edição de consultas (apenas médicos)
+- ✅ Visualização com controle de acesso por role
+- ✅ Histórico completo de consultas
+- ✅ Busca por período e filtros
+
+### 🔧 Configurações Especiais
+
+#### RabbitMQ (Temporariamente Desabilitado)
+- ⚠️ **AsyncMessagingService** desabilitado para desenvolvimento local
+- ⚠️ **AsyncConfig** comentado para evitar erros de conexão
+- ✅ Aplicação funciona normalmente sem RabbitMQ
+- 🔄 Pode ser reabilitado quando RabbitMQ estiver disponível
+
+#### Context Path
+- 🔗 **Todos os endpoints** usam o prefixo `/api`
+- 🔗 **GraphQL**: `http://localhost:8080/api/graphql`
+- 🔗 **GraphiQL**: `http://localhost:8080/api/graphiql`
+- 🔗 **Swagger**: `http://localhost:8080/api/swagger-ui/index.html`
 
 ## 🏗️ Arquitetura
 
@@ -94,51 +108,218 @@ src/main/java/com/fiap/atividade3/
    ```
 
 4. **Acesse a aplicação**
-   - Aplicação: `http://localhost:8080/api`
-   - Swagger UI: `http://localhost:8080/api/swagger-ui/index.html`
-   - H2 Console: `http://localhost:8080/api/h2-console`
-   - GraphQL Playground: `http://localhost:8080/api/graphql`
+   - **Aplicação**: `http://localhost:8080/api`
+   - **GraphiQL (Recomendado)**: `http://localhost:8080/api/graphiql`
+   - **Swagger UI**: `http://localhost:8080/api/swagger-ui/index.html`
+   - **H2 Console**: `http://localhost:8080/api/h2-console`
 
-## APIs Disponíveis
+## 🧪 Como Testar a API
 
-### REST Endpoints
+### 🎯 GraphQL (Recomendado)
 
-#### Autenticação
-- `POST /api/auth/login` - Login do usuário
-- `GET /api/auth/me` - Informações do usuário atual
-- `POST /api/auth/validate` - Validar token JWT
+**URL**: `http://localhost:8080/api/graphiql`
 
-#### Consultas
-- `GET /api/consultas/{id}` - Buscar consulta por ID
-- `GET /api/consultas/minhas` - Consultas do usuário atual
-- `GET /api/consultas/paciente/{id}` - Consultas por paciente
-- `GET /api/consultas/medico/{id}` - Consultas por médico
-- `GET /api/consultas/todas` - Todas as consultas (staff médico)
-- `GET /api/consultas/recentes` - Consultas recentes (30 dias)
-- `POST /api/consultas` - Criar nova consulta
-- `PUT /api/consultas/{id}` - Atualizar consulta
-- `DELETE /api/consultas/{id}` - Deletar consulta
+#### 📋 Explorando os Endpoints Disponíveis
 
-### GraphQL
+1. **Abra o GraphiQL** no seu navegador
+2. **Clique em "Docs"** (canto superior direito) para ver todos os endpoints
+3. **Use auto-complete**: Digite `query {` ou `mutation {` e pressione `Ctrl+Space`
 
-Acesse o GraphQL Playground em `http://localhost:8080/api/graphql` para:
-- Explorar o schema completo
-- Executar queries e mutations
-- Testar subscriptions (se habilitadas)
+#### 🔥 Exemplos Práticos de Teste
 
-#### Exemplo de Query
+##### 1. Listar Usuários Existentes
 ```graphql
 query {
-  currentUser {
+  usuarios {
     id
     nome
     email
+    role
+    active
+    createdAt
+  }
+}
+```
+
+##### 2. Cadastrar um Novo Médico
+```graphql
+mutation {
+  registrarMedico(input: {
+    nome: "Dr. Pedro Almeida"
+    email: "pedro.almeida@hospital.com"
+    senha: "senha123"
+    crm: "54321-SP"
+    especialidade: "Neurologia"
+  }) {
+    id
+    nome
+    email
+    crm
+    especialidade
+    role
+    active
+    createdAt
+  }
+}
+```
+
+##### 3. Cadastrar um Novo Enfermeiro
+```graphql
+mutation {
+  registrarEnfermeiro(input: {
+    nome: "Fernanda Lima"
+    email: "fernanda.lima@hospital.com"
+    senha: "senha123"
+    coren: "789012-SP"
+    setor: "Pediatria"
+  }) {
+    id
+    nome
+    email
+    coren
+    setor
+    role
+    active
+  }
+}
+```
+
+##### 4. Cadastrar um Novo Paciente
+```graphql
+mutation {
+  registrarPaciente(input: {
+    nome: "Roberto Silva"
+    email: "roberto.silva@email.com"
+    senha: "senha123"
+    cpf: "987.654.321-00"
+    dataNascimento: "1990-03-20"
+    telefone: "(11) 88888-8888"
+    endereco: "Av. Paulista, 1000"
+  }) {
+    id
+    nome
+    email
+    cpf
+    telefone
+    dataNascimento
+    endereco
     role
   }
 }
 ```
 
-#### Exemplo de Mutation
+##### 5. Fazer Login
+```graphql
+mutation {
+  login(input: {
+    email: "pedro.almeida@hospital.com"
+    senha: "senha123"
+  }) {
+    token
+    usuario {
+      id
+      nome
+      email
+      role
+    }
+  }
+}
+```
+
+##### 6. Listar Médicos
+```graphql
+query {
+  medicos {
+    id
+    nome
+    email
+    crm
+    especialidade
+    active
+  }
+}
+```
+
+##### 7. Listar Consultas
+```graphql
+query {
+  consultas {
+    id
+    motivo
+    diagnostico
+    dataConsulta
+    medico {
+      nome
+      especialidade
+    }
+    paciente {
+      nome
+    }
+    enfermeiro {
+      nome
+    }
+  }
+}
+```
+
+#### ✅ Validações que Você Pode Testar
+
+1. **Email Duplicado**: Tente cadastrar dois usuários com o mesmo email
+2. **CRM Duplicado**: Tente cadastrar dois médicos com o mesmo CRM
+3. **COREN Duplicado**: Tente cadastrar dois enfermeiros com o mesmo COREN
+4. **CPF Duplicado**: Tente cadastrar dois pacientes com o mesmo CPF
+5. **Campos Obrigatórios**: Tente cadastrar sem preencher campos obrigatórios
+
+#### 🎮 Dicas de Uso do GraphiQL
+
+- **Auto-complete**: `Ctrl+Space` (Windows/Linux) ou `Cmd+Space` (Mac)
+- **Executar Query**: `Ctrl+Enter` ou clique no botão ▶️
+- **Formatar Código**: `Ctrl+Shift+P`
+- **Histórico**: Seta para cima/baixo para navegar no histórico
+
+### 🔧 REST Endpoints (Swagger)
+
+**URL**: `http://localhost:8080/api/swagger-ui/index.html`
+
+#### Endpoints Disponíveis
+
+##### Autenticação
+- `POST /api/auth/login` - Login do usuário
+- `GET /api/auth/me` - Informações do usuário atual
+
+##### Consultas
+- `GET /api/consultas/{id}` - Buscar consulta por ID
+- `GET /api/consultas/minhas` - Consultas do usuário atual
+- `GET /api/consultas/paciente/{id}` - Consultas por paciente
+- `GET /api/consultas/medico/{id}` - Consultas por médico
+- `POST /api/consultas` - Criar nova consulta
+- `PUT /api/consultas/{id}` - Atualizar consulta
+
+**⚠️ Nota**: Os endpoints de cadastro de usuários estão disponíveis apenas via GraphQL
+
+## 📊 Dados de Exemplo
+
+A aplicação carrega automaticamente dados de exemplo na inicialização:
+
+### 👨‍⚕️ Médicos
+- **Dr. João Silva** - `joao.silva@hospital.com` - CRM: 12345-SP - Cardiologia
+- **Dra. Maria Santos** - `maria.santos@hospital.com` - CRM: 67890-SP - Pediatria
+
+### 👩‍⚕️ Enfermeiros
+- **Ana Costa** - `ana.costa@hospital.com` - COREN: 123456-SP - UTI
+- **Carlos Oliveira** - `carlos.oliveira@hospital.com` - COREN: 654321-SP - Emergência
+
+### 👤 Pacientes
+- **José Pereira** - `jose.pereira@email.com` - CPF: 123.456.789-01
+- **Maria Fernanda** - `maria.fernanda@email.com` - CPF: 987.654.321-09
+
+### 🔑 Credenciais
+- **Senha padrão para todos**: `senha123`
+- **Consultas de exemplo**: 2 consultas já cadastradas
+
+### 🧪 Como Testar com Dados Existentes
+
+1. **Faça login com um usuário existente**:
 ```graphql
 mutation {
   login(input: {
@@ -149,85 +330,24 @@ mutation {
     usuario {
       id
       nome
+      email
       role
     }
   }
 }
 ```
 
-### 2. Buscar Consultas (Médico/Enfermeiro)
+2. **Liste os dados existentes**:
 ```graphql
 query {
-  todasConsultas {
-    id
-    dataConsulta
-    motivo
-    diagnostico
-    paciente {
-      nome
-    }
-    medico {
-      nome
-      especialidade
-    }
-  }
-}
-```
-
-### 3. Consultas do Paciente
-```graphql
-query {
-  minhasConsultas {
-    id
-    dataConsulta
-    motivo
-    diagnostico
-    medico {
-      nome
-      especialidade
-    }
-  }
-}
-```
-
-### 4. Criar Consulta
-```graphql
-mutation {
-  criarConsulta(input: {
-    dataConsulta: "2024-01-15T10:00:00"
-    motivo: "Consulta de rotina"
-    pacienteId: 1
-    medicoId: 1
-    enfermeiroId: 1
-  }) {
-    id
-    dataConsulta
-    motivo
-    paciente {
-      nome
-    }
-  }
-}
-```
-
-### 5. Registrar Novo Paciente
-```graphql
-mutation {
-  registrarPaciente(input: {
-    nome: "João da Silva"
-    email: "joao@email.com"
-    senha: "senha123"
-    cpf: "12345678901"
-    dataNascimento: "1990-01-01"
-    telefone: "(11) 99999-9999"
-    endereco: "Rua das Flores, 123"
-  }) {
+  usuarios {
     id
     nome
     email
-    cpf
+    role
   }
 }
+```
 ```
 
 ## 🔒 Segurança

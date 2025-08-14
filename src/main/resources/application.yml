@@ -30,6 +30,9 @@ spring:
     websocket:
       path: /graphql
     path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
     cors:
       allowed-origins: "*"
       allowed-methods: GET,POST

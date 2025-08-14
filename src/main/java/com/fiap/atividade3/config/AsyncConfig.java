@@ -10,9 +10,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Configuration for asynchronous messaging using RabbitMQ
+ * TEMPORARILY DISABLED - RabbitMQ not available in development
  */
-@Configuration
-@EnableAsync
+//@Configuration
+//@EnableAsync
 // @ConditionalOnProperty(name = "spring.rabbitmq.host")
 public class AsyncConfig {
 
