@@ -108,10 +108,9 @@ src/main/java/com/fiap/atividade3/
    ```
 
 4. **Acesse a aplicação**
-   - **Aplicação**: `http://localhost:8080/api`
-   - **GraphiQL (Recomendado)**: `http://localhost:8080/api/graphiql`
-   - **Swagger UI**: `http://localhost:8080/api/swagger-ui/index.html`
-   - **H2 Console**: `http://localhost:8080/api/h2-console`
+   - **GraphiQL (API Principal)**: `http://localhost:8080/api/graphiql`
+   - **H2 Console (Banco de Dados)**: `http://localhost:8080/api/h2-console`
+   - ~~**Swagger UI**: Removido - Aplicação 100% GraphQL~~
 
 ## 🧪 Como Testar a API
 
@@ -277,25 +276,20 @@ query {
 - **Formatar Código**: `Ctrl+Shift+P`
 - **Histórico**: Seta para cima/baixo para navegar no histórico
 
-### 🔧 REST Endpoints (Swagger)
+### 🚫 Swagger UI (Não Aplicável)
 
-**URL**: `http://localhost:8080/api/swagger-ui/index.html`
+**⚠️ Esta aplicação usa arquitetura 100% GraphQL**
 
-#### Endpoints Disponíveis
+- **Não há endpoints REST** - Todos os endpoints foram migrados para GraphQL
+- **Swagger UI está vazio** - Use o GraphiQL para explorar a API
+- **GraphiQL é a única interface** necessária para testar a API
 
-##### Autenticação
-- `POST /api/auth/login` - Login do usuário
-- `GET /api/auth/me` - Informações do usuário atual
-
-##### Consultas
-- `GET /api/consultas/{id}` - Buscar consulta por ID
-- `GET /api/consultas/minhas` - Consultas do usuário atual
-- `GET /api/consultas/paciente/{id}` - Consultas por paciente
-- `GET /api/consultas/medico/{id}` - Consultas por médico
-- `POST /api/consultas` - Criar nova consulta
-- `PUT /api/consultas/{id}` - Atualizar consulta
-
-**⚠️ Nota**: Os endpoints de cadastro de usuários estão disponíveis apenas via GraphQL
+**💡 Por que 100% GraphQL?**
+- ✅ **API única e consistente**
+- ✅ **Queries flexíveis** (você escolhe os campos)
+- ✅ **Menos código duplicado**
+- ✅ **Documentação automática** no GraphiQL
+- ✅ **Melhor experiência de desenvolvimento**
 
 ## 📊 Dados de Exemplo
 
