@@ -2,12 +2,12 @@ spring:
   application:
     name: hospital-management-system
   
-  # Database Configuration (H2 for development)
+  # Database Configuration (PostgreSQL for Docker, H2 for local development)
   datasource:
-    url: jdbc:h2:mem:hospital_db
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:hospital_db}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.h2.Driver}
+    username: ${SPRING_DATASOURCE_USERNAME:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
   
   # H2 Console (for development only)
   h2:
@@ -17,9 +17,9 @@ spring:
   
   # JPA Configuration
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.H2Dialect}
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:create-drop}
     show-sql: true
     properties:
       hibernate:
@@ -44,13 +44,13 @@ spring:
       name: admin
       password: admin123
   
-  # RabbitMQ Configuration (disabled for development)
-  # rabbitmq:
-  #   host: localhost
-  #   port: 5672
-  #   username: guest
-  #   password: guest
-  #   virtual-host: /
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    virtual-host: ${SPRING_RABBITMQ_VIRTUAL_HOST:/}
 
 # JWT Configuration
 jwt:

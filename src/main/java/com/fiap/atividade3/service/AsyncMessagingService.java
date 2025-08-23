@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service for handling asynchronous messaging between services
- * TEMPORARILY DISABLED - RabbitMQ not available in development
  */
-//@Service
+@Service
 public class AsyncMessagingService {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncMessagingService.class);

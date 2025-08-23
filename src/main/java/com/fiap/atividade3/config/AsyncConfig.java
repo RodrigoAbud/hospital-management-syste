@@ -10,11 +10,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Configuration for asynchronous messaging using RabbitMQ
- * TEMPORARILY DISABLED - RabbitMQ not available in development
  */
-//@Configuration
-//@EnableAsync
-// @ConditionalOnProperty(name = "spring.rabbitmq.host")
+@Configuration
+@EnableAsync
 public class AsyncConfig {
 
     public static final String CONSULTA_EXCHANGE = "consulta.exchange";
