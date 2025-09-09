@@ -1,14 +1,15 @@
 package com.fiap.atividade3.graphql.resolver;
 
+import com.fiap.atividade3.agendamento.service.AgendamentoService;
+import com.fiap.atividade3.historico.service.HistoricoService;
 import com.fiap.atividade3.graphql.input.ConsultaInput;
 import com.fiap.atividade3.graphql.input.ConsultaUpdateInput;
 import com.fiap.atividade3.model.entity.Consulta;
 import com.fiap.atividade3.model.entity.Usuario;
-import com.fiap.atividade3.repository.ConsultaRepository;
 import com.fiap.atividade3.repository.MedicoRepository;
 import com.fiap.atividade3.repository.PacienteRepository;
 import com.fiap.atividade3.repository.EnfermeiroRepository;
-import com.fiap.atividade3.service.ConsultaService;
+import com.fiap.atividade3.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -27,10 +28,14 @@ import java.util.List;
 public class ConsultaResolver {
 
     @Autowired
-    private ConsultaService consultaService;
-
+    private AgendamentoService agendamentoService;
+    
     @Autowired
-    private ConsultaRepository consultaRepository;
+    private HistoricoService historicoService;
+    
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
 
     @Autowired
     private PacienteRepository pacienteRepository;
@@ -47,7 +52,7 @@ public class ConsultaResolver {
     @QueryMapping
     public Consulta consulta(@Argument Long id) {
         Usuario usuario = getCurrentUser();
-        return consultaService.buscarConsultaPorId(id, usuario);
+        return agendamentoService.buscarConsultaPorId(id, usuario);
     }
 
     /**
@@ -56,7 +61,7 @@ public class ConsultaResolver {
     @QueryMapping
     public List<Consulta> minhasConsultas() {
         Usuario usuario = getCurrentUser();
-        return consultaService.buscarConsultasPorPaciente(usuario.getId(), usuario);
+        return historicoService.buscarConsultasPorPaciente(usuario.getId(), usuario);
     }
 
     /**
@@ -65,7 +70,7 @@ public class ConsultaResolver {
     @QueryMapping
     public List<Consulta> consultasPorPaciente(@Argument Long pacienteId) {
         Usuario usuario = getCurrentUser();
-        return consultaService.buscarConsultasPorPaciente(pacienteId, usuario);
+        return historicoService.buscarConsultasPorPaciente(pacienteId, usuario);
     }
 
     /**
@@ -73,7 +78,7 @@ public class ConsultaResolver {
      */
     @QueryMapping
     public List<Consulta> consultasPorMedico(@Argument Long medicoId) {
-        return consultaService.buscarConsultasPorMedico(medicoId);
+        return historicoService.buscarConsultasPorMedico(medicoId);
     }
 
     /**
@@ -81,7 +86,7 @@ public class ConsultaResolver {
      */
     @QueryMapping
     public List<Consulta> todasConsultas() {
-        return consultaService.buscarTodasConsultas();
+        return historicoService.buscarTodasConsultas();
     }
 
     /**
@@ -89,7 +94,7 @@ public class ConsultaResolver {
      */
     @QueryMapping
     public List<Consulta> consultasRecentes() {
-        return consultaService.buscarConsultasRecentes();
+        return historicoService.buscarConsultasRecentes();
     }
 
     /**
@@ -97,7 +102,7 @@ public class ConsultaResolver {
      */
     @QueryMapping
     public List<Consulta> consultasPorPeriodo(@Argument LocalDateTime inicio, @Argument LocalDateTime fim) {
-        return consultaService.buscarConsultasPorPeriodo(inicio, fim);
+        return historicoService.buscarConsultasPorPeriodo(inicio, fim);
     }
 
     /**
@@ -123,7 +128,7 @@ public class ConsultaResolver {
                     .orElseThrow(() -> new RuntimeException("Enfermeiro não encontrado")));
         }
 
-        return consultaService.criarConsulta(consulta);
+        return agendamentoService.criarConsulta(consulta);
     }
 
     /**
@@ -136,7 +141,7 @@ public class ConsultaResolver {
         consultaAtualizada.setPrescricao(input.getPrescricao());
         consultaAtualizada.setObservacoes(input.getObservacoes());
 
-        return consultaService.atualizarConsulta(id, consultaAtualizada);
+        return agendamentoService.atualizarConsulta(id, consultaAtualizada);
     }
 
     /**
@@ -145,7 +150,7 @@ public class ConsultaResolver {
     @MutationMapping
     public Boolean deletarConsulta(@Argument Long id) {
         try {
-            consultaService.deletarConsulta(id);
+            agendamentoService.deletarConsulta(id);
             return true;
         } catch (Exception e) {
             return false;
@@ -154,8 +159,8 @@ public class ConsultaResolver {
 
     private Usuario getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Usuario) {
-            return (Usuario) authentication.getPrincipal();
+        if (authentication != null && authentication.getName() != null) {
+            return userDetailsService.findByEmail(authentication.getName());
         }
         throw new RuntimeException("Usuário não autenticado");
     }
