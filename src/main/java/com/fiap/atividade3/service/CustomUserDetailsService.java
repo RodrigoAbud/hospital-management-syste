@@ -28,4 +28,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         
         return usuario;
     }
+
+    /**
+     * Find user by email (for GraphQL resolvers)
+     */
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com email: " + email));
+    }
 }

@@ -75,4 +75,21 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
      * Find consultations by doctor ordered by date descending
      */
     List<Consulta> findByMedicoIdOrderByDataConsultaDesc(Long medicoId);
+
+    /**
+     * Find future consultations by patient ID
+     */
+    List<Consulta> findByPacienteIdAndDataConsultaAfterOrderByDataConsultaAsc(Long pacienteId, LocalDateTime dataConsulta);
+
+    /**
+     * Find consultations by doctor specialty
+     */
+    @Query("SELECT c FROM Consulta c WHERE c.medico.especialidade = :especialidade ORDER BY c.dataConsulta DESC")
+    List<Consulta> findByMedicoEspecialidadeOrderByDataConsultaDesc(@Param("especialidade") String especialidade);
+
+    /**
+     * Count consultations after a specific date
+     */
+    @Query("SELECT COUNT(c) FROM Consulta c WHERE c.dataConsulta >= :dataConsulta")
+    long countByDataConsultaAfter(@Param("dataConsulta") LocalDateTime dataConsulta);
 }
