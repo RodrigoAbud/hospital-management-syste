@@ -19,9 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-/**
- * GraphQL resolver for authentication operations
- */
 @Controller
 public class AuthResolver {
 
@@ -31,9 +28,6 @@ public class AuthResolver {
     @Autowired
     private UserRegistrationService userRegistrationService;
 
-    /**
-     * Login mutation
-     */
     @MutationMapping
     public AuthPayload login(@Argument LoginInput input) {
         String token = authService.login(input.getEmail(), input.getSenha());
@@ -41,33 +35,21 @@ public class AuthResolver {
         return new AuthPayload(token, usuario);
     }
 
-    /**
-     * Register a new medico
-     */
     @MutationMapping
     public Medico registrarMedico(@Argument MedicoInput input) {
         return userRegistrationService.registrarMedico(input);
     }
 
-    /**
-     * Register a new enfermeiro
-     */
     @MutationMapping
     public Enfermeiro registrarEnfermeiro(@Argument EnfermeiroInput input) {
         return userRegistrationService.registrarEnfermeiro(input);
     }
 
-    /**
-     * Register a new paciente
-     */
     @MutationMapping
     public Paciente registrarPaciente(@Argument PacienteInput input) {
         return userRegistrationService.registrarPaciente(input);
     }
 
-    /**
-     * Get current authenticated user
-     */
     @QueryMapping
     public Usuario me() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

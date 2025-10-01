@@ -2,9 +2,6 @@ package com.fiap.atividade3.graphql.type;
 
 import com.fiap.atividade3.model.entity.Usuario;
 
-/**
- * GraphQL type for authentication response
- */
 public class AuthPayload {
     
     private String token;

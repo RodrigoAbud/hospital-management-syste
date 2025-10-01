@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Serviço responsável pelo processamento de notificações
- * Faz parte da arquitetura de microserviços lógicos
- */
+
 @Service
 public class NotificacaoService {
 
@@ -19,10 +16,7 @@ public class NotificacaoService {
     @Autowired
     private AsyncMessagingService asyncMessagingService;
 
-    /**
-     * Processar evento de consulta criada
-     * Envia mensagem assíncrona via RabbitMQ
-     */
+
     public void processarConsultaCriada(Consulta consulta) {
         logger.info("Processando notificação para consulta criada - ID: {}", consulta.getId());
         
@@ -38,10 +32,7 @@ public class NotificacaoService {
         enviarNotificacaoPaciente(consulta, "CONSULTA_CRIADA");
     }
 
-    /**
-     * Processar evento de consulta atualizada
-     * Envia mensagem assíncrona via RabbitMQ
-     */
+
     public void processarConsultaAtualizada(Consulta consulta) {
         logger.info("Processando notificação para consulta atualizada - ID: {}", consulta.getId());
         
@@ -51,9 +42,7 @@ public class NotificacaoService {
         enviarNotificacaoPaciente(consulta, "CONSULTA_ATUALIZADA");
     }
 
-    /**
-     * Enviar notificação específica para o paciente
-     */
+
     private void enviarNotificacaoPaciente(Consulta consulta, String tipoEvento) {
         try {
             String mensagem = construirMensagemNotificacao(consulta, tipoEvento);
@@ -72,9 +61,7 @@ public class NotificacaoService {
         }
     }
 
-    /**
-     * Construir mensagem personalizada baseada no tipo de evento
-     */
+
     private String construirMensagemNotificacao(Consulta consulta, String tipoEvento) {
         switch (tipoEvento) {
             case "CONSULTA_CRIADA":
@@ -97,9 +84,7 @@ public class NotificacaoService {
         }
     }
 
-    /**
-     * Processar lembretes automáticos (pode ser chamado por scheduler)
-     */
+
     public void processarLembretesAutomaticos() {
         logger.info("🔔 Processando lembretes automáticos de consultas futuras...");
         

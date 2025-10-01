@@ -7,18 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-/**
- * Listener responsável por processar eventos de consultas via RabbitMQ
- * Faz parte do serviço de notificações na arquitetura de microserviços lógicos
- */
+
 @Component
 public class ConsultaEventListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsultaEventListener.class);
 
-    /**
-     * Processar eventos de consulta criada
-     */
+
     @RabbitListener(queues = AsyncConfig.CONSULTA_CREATED_QUEUE)
     public void handleConsultaCreated(Consulta consulta) {
         logger.info("🎯 [NOTIFICAÇÃO] Recebido evento de consulta criada - ID: {}", consulta.getId());
@@ -38,9 +33,7 @@ public class ConsultaEventListener {
         }
     }
 
-    /**
-     * Processar eventos de consulta atualizada
-     */
+
     @RabbitListener(queues = AsyncConfig.CONSULTA_UPDATED_QUEUE)
     public void handleConsultaUpdated(Consulta consulta) {
         logger.info("🎯 [NOTIFICAÇÃO] Recebido evento de consulta atualizada - ID: {}", consulta.getId());
@@ -59,9 +52,7 @@ public class ConsultaEventListener {
         }
     }
 
-    /**
-     * Lógica específica para processar notificação de consulta criada
-     */
+
     private void processarNotificacaoConsultaCriada(Consulta consulta) {
         // Simular processamento de notificações
         logger.info("📧 Enviando confirmação de agendamento para: {}", consulta.getPaciente().getEmail());
@@ -81,9 +72,7 @@ public class ConsultaEventListener {
         }
     }
 
-    /**
-     * Lógica específica para processar notificação de consulta atualizada
-     */
+
     private void processarNotificacaoConsultaAtualizada(Consulta consulta) {
         // Simular processamento de notificações de atualização
         logger.info("📧 Enviando atualização de consulta para: {}", consulta.getPaciente().getEmail());

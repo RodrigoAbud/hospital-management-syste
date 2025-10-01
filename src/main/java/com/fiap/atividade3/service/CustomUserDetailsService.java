@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * Custom UserDetailsService implementation for Spring Security
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -29,9 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return usuario;
     }
 
-    /**
-     * Find user by email (for GraphQL resolvers)
-     */
+
     public Usuario findByEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com email: " + email));

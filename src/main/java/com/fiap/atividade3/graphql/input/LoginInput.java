@@ -3,9 +3,6 @@ package com.fiap.atividade3.graphql.input;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-/**
- * Input type for login mutation
- */
 public class LoginInput {
     
     @Email(message = "Email deve ser válido")

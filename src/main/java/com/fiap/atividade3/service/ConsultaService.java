@@ -15,9 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service for consultation operations with role-based access control
- */
+
 @Service
 @Transactional
 public class ConsultaService {
@@ -34,9 +32,7 @@ public class ConsultaService {
     @Autowired
     private AsyncMessagingService asyncMessagingService;
 
-    /**
-     * Create a new consultation (Enfermeiros can register consultations)
-     */
+
     @PreAuthorize("hasRole('ENFERMEIRO') or hasRole('MEDICO')")
     public Consulta criarConsulta(Consulta consulta) {
         Consulta savedConsulta = consultaRepository.save(consulta);
@@ -45,9 +41,7 @@ public class ConsultaService {
         return savedConsulta;
     }
 
-    /**
-     * Update consultation (only Médicos can edit)
-     */
+
     @PreAuthorize("hasRole('MEDICO')")
     public Consulta atualizarConsulta(Long id, Consulta consultaAtualizada) {
         Optional<Consulta> consultaExistente = consultaRepository.findById(id);
@@ -64,9 +58,7 @@ public class ConsultaService {
         throw new RuntimeException("Consulta não encontrada");
     }
 
-    /**
-     * Get consultation by ID with role-based access control
-     */
+
     public Consulta buscarConsultaPorId(Long id, Usuario usuario) {
         Optional<Consulta> consulta = consultaRepository.findById(id);
         if (consulta.isPresent()) {
@@ -84,9 +76,7 @@ public class ConsultaService {
         throw new RuntimeException("Consulta não encontrada");
     }
 
-    /**
-     * Get consultations by patient ID with role-based access control
-     */
+
     public List<Consulta> buscarConsultasPorPaciente(Long pacienteId, Usuario usuario) {
         // Pacientes can only view their own consultations
         if (usuario.getRole() == UserRole.PACIENTE && !usuario.getId().equals(pacienteId)) {
@@ -96,42 +86,28 @@ public class ConsultaService {
         return consultaRepository.findByPacienteIdOrderByDataConsultaDesc(pacienteId);
     }
 
-    /**
-     * Get consultations by doctor ID (Médicos and Enfermeiros can access)
-     */
+
     @PreAuthorize("hasRole('MEDICO') or hasRole('ENFERMEIRO')")
     public List<Consulta> buscarConsultasPorMedico(Long medicoId) {
         return consultaRepository.findByMedicoIdOrderByDataConsultaDesc(medicoId);
     }
 
-    /**
-     * Get all consultations (only for Médicos and Enfermeiros)
-     */
     @PreAuthorize("hasRole('MEDICO') or hasRole('ENFERMEIRO')")
     public List<Consulta> buscarTodasConsultas() {
         return consultaRepository.findAll();
     }
 
-    /**
-     * Get consultations by date range (Médicos and Enfermeiros only)
-     */
     @PreAuthorize("hasRole('MEDICO') or hasRole('ENFERMEIRO')")
     public List<Consulta> buscarConsultasPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         return consultaRepository.findByDataConsultaBetween(inicio, fim);
     }
 
-    /**
-     * Get recent consultations (last 30 days) - Médicos and Enfermeiros only
-     */
     @PreAuthorize("hasRole('MEDICO') or hasRole('ENFERMEIRO')")
     public List<Consulta> buscarConsultasRecentes() {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
         return consultaRepository.findRecentConsultations(thirtyDaysAgo);
     }
 
-    /**
-     * Delete consultation (only Médicos can delete)
-     */
     @PreAuthorize("hasRole('MEDICO')")
     public void deletarConsulta(Long id) {
         if (consultaRepository.existsById(id)) {

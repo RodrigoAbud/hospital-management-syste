@@ -9,9 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entity representing a patient in the hospital management system
- */
+
 @Entity
 @Table(name = "pacientes")
 @PrimaryKeyJoinColumn(name = "usuario_id")

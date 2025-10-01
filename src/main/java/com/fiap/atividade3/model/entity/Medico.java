@@ -8,9 +8,7 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entity representing a doctor in the hospital management system
- */
+
 @Entity
 @Table(name = "medicos")
 @PrimaryKeyJoinColumn(name = "usuario_id")

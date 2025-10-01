@@ -13,9 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * JWT utility class for token generation, validation, and extraction
- */
+
 @Component
 public class JwtUtil {
 
@@ -29,45 +27,33 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    /**
-     * Extract username from JWT token
-     */
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    /**
-     * Extract expiration date from JWT token
-     */
+
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    /**
-     * Extract user role from JWT token
-     */
+
     public String extractRole(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
 
-    /**
-     * Extract user ID from JWT token
-     */
+
     public Long extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", Long.class));
     }
 
-    /**
-     * Extract specific claim from JWT token
-     */
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * Extract all claims from JWT token
-     */
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -76,16 +62,12 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    /**
-     * Check if token is expired
-     */
+
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    /**
-     * Generate JWT token for user
-     */
+
     public String generateToken(Usuario usuario) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", usuario.getId());
@@ -94,9 +76,7 @@ public class JwtUtil {
         return createToken(claims, usuario.getEmail());
     }
 
-    /**
-     * Create JWT token with claims and subject
-     */
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .claims(claims)
@@ -107,9 +87,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    /**
-     * Validate JWT token
-     */
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         try {
             final String username = extractUsername(token);
@@ -119,9 +97,7 @@ public class JwtUtil {
         }
     }
 
-    /**
-     * Validate JWT token without UserDetails
-     */
+
     public Boolean validateToken(String token) {
         try {
             extractAllClaims(token);
@@ -131,9 +107,7 @@ public class JwtUtil {
         }
     }
 
-    /**
-     * Get token from Authorization header
-     */
+
     public String getTokenFromHeader(String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);

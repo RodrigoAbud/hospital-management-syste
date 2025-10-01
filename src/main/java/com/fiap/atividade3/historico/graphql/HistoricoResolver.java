@@ -15,10 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * GraphQL Resolver para operações de histórico e consultas
- * Faz parte do serviço de histórico na arquitetura de microserviços lógicos
- */
+
 @Controller
 public class HistoricoResolver {
 
@@ -28,36 +25,24 @@ public class HistoricoResolver {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    /**
-     * Buscar todas as consultas (com controle de acesso)
-     */
     @QueryMapping
-    public List<Consulta> consultas() {
+    public List<Consulta> consultasHistorico() {
         return historicoService.buscarTodasConsultas();
     }
 
-    /**
-     * Buscar consultas por paciente
-     */
     @QueryMapping
-    public List<Consulta> consultasPorPaciente(@Argument Long pacienteId) {
-        Usuario usuario = getUsuarioAutenticado();
+    public List<Consulta> consultasPorPacienteHistorico(@Argument Long pacienteId) {
+        Usuario usuario = getUsuarioAutenticadoHistorico();
         return historicoService.buscarConsultasPorPaciente(pacienteId, usuario);
     }
 
-    /**
-     * Buscar consultas por médico
-     */
     @QueryMapping
-    public List<Consulta> consultasPorMedico(@Argument Long medicoId) {
+    public List<Consulta> consultasPorMedicoHistorico(@Argument Long medicoId) {
         return historicoService.buscarConsultasPorMedico(medicoId);
     }
 
-    /**
-     * Buscar consultas por período
-     */
     @QueryMapping
-    public List<Consulta> consultasPorPeriodo(@Argument String inicio, @Argument String fim) {
+    public List<Consulta> consultasPorPeriodoHistorico(@Argument String inicio, @Argument String fim) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime dataInicio = LocalDateTime.parse(inicio, formatter);
         LocalDateTime dataFim = LocalDateTime.parse(fim, formatter);
@@ -65,51 +50,33 @@ public class HistoricoResolver {
         return historicoService.buscarConsultasPorPeriodo(dataInicio, dataFim);
     }
 
-    /**
-     * Buscar consultas recentes (últimos 30 dias)
-     */
     @QueryMapping
-    public List<Consulta> consultasRecentes() {
+    public List<Consulta> consultasRecentesHistorico() {
         return historicoService.buscarConsultasRecentes();
     }
 
-    /**
-     * Buscar consultas futuras de um paciente
-     */
     @QueryMapping
-    public List<Consulta> consultasFuturas(@Argument Long pacienteId) {
-        Usuario usuario = getUsuarioAutenticado();
+    public List<Consulta> consultasFuturasHistorico(@Argument Long pacienteId) {
+        Usuario usuario = getUsuarioAutenticadoHistorico();
         return historicoService.buscarConsultasFuturas(pacienteId, usuario);
     }
 
-    /**
-     * Buscar histórico completo de um paciente
-     */
     @QueryMapping
-    public List<Consulta> historicoCompleto(@Argument Long pacienteId) {
+    public List<Consulta> historicoCompletoHistorico(@Argument Long pacienteId) {
         return historicoService.buscarHistoricoCompleto(pacienteId);
     }
 
-    /**
-     * Buscar consultas por especialidade
-     */
     @QueryMapping
-    public List<Consulta> consultasPorEspecialidade(@Argument String especialidade) {
+    public List<Consulta> consultasPorEspecialidadeHistorico(@Argument String especialidade) {
         return historicoService.buscarConsultasPorEspecialidade(especialidade);
     }
 
-    /**
-     * Gerar estatísticas de consultas
-     */
     @QueryMapping
-    public HistoricoService.ConsultaStats estatisticasConsultas() {
+    public HistoricoService.ConsultaStats estatisticasConsultasHistorico() {
         return historicoService.gerarEstatisticas();
     }
 
-    /**
-     * Obter usuário autenticado do contexto de segurança
-     */
-    private Usuario getUsuarioAutenticado() {
+    private Usuario getUsuarioAutenticadoHistorico() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getName() != null) {
             return userDetailsService.findByEmail(authentication.getName());

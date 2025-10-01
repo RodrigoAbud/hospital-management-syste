@@ -11,9 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- * Service for authentication operations
- */
+
 @Service
 public class AuthService {
 
@@ -29,9 +27,6 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     * Authenticate user and generate JWT token
-     */
     public String login(String email, String senha) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -45,9 +40,7 @@ public class AuthService {
         }
     }
 
-    /**
-     * Register a new user (base method - specific user types should be created through their respective services)
-     */
+
     public Usuario register(Usuario usuario) {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("Email já está em uso");
@@ -59,16 +52,12 @@ public class AuthService {
         return usuarioRepository.save(usuario);
     }
 
-    /**
-     * Validate JWT token
-     */
+
     public boolean validateToken(String token) {
         return jwtUtil.validateToken(token);
     }
 
-    /**
-     * Get user from JWT token
-     */
+
     public Usuario getUserFromToken(String token) {
         String email = jwtUtil.extractUsername(token);
         return usuarioRepository.findByEmail(email)

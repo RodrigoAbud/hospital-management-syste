@@ -12,10 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-/**
- * Serviço responsável pelo agendamento e gestão de consultas
- * Faz parte da arquitetura de microserviços lógicos
- */
 @Service
 @Transactional
 public class AgendamentoService {
@@ -26,10 +22,6 @@ public class AgendamentoService {
     @Autowired
     private NotificacaoService notificacaoService;
 
-    /**
-     * Criar nova consulta (Enfermeiros e Médicos)
-     * Envia evento assíncrono para notificações
-     */
     @PreAuthorize("hasRole('ENFERMEIRO') or hasRole('MEDICO')")
     public Consulta criarConsulta(Consulta consulta) {
         Consulta savedConsulta = consultaRepository.save(consulta);
@@ -40,10 +32,6 @@ public class AgendamentoService {
         return savedConsulta;
     }
 
-    /**
-     * Atualizar consulta existente (apenas Médicos)
-     * Envia evento assíncrono para notificações
-     */
     @PreAuthorize("hasRole('MEDICO')")
     public Consulta atualizarConsulta(Long id, Consulta consultaAtualizada) {
         Optional<Consulta> consultaExistente = consultaRepository.findById(id);
@@ -63,9 +51,6 @@ public class AgendamentoService {
         throw new RuntimeException("Consulta não encontrada");
     }
 
-    /**
-     * Deletar consulta (apenas Médicos)
-     */
     @PreAuthorize("hasRole('MEDICO')")
     public void deletarConsulta(Long id) {
         if (consultaRepository.existsById(id)) {
@@ -75,9 +60,7 @@ public class AgendamentoService {
         }
     }
 
-    /**
-     * Buscar consulta por ID com controle de acesso
-     */
+
     public Consulta buscarConsultaPorId(Long id, Usuario usuario) {
         Optional<Consulta> consulta = consultaRepository.findById(id);
         if (consulta.isPresent()) {
