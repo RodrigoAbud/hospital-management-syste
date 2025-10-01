@@ -1,4 +1,3 @@
-
 # Sistema de Gerenciamento Hospitalar
 
 Um backend modular e seguro para gerenciamento hospitalar desenvolvido com Java 21, Spring Boot e GraphQL.

@@ -18,9 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * Service to initialize database with sample data for testing
- */
+
 @Service
 public class DataInitializationService implements CommandLineRunner {
 

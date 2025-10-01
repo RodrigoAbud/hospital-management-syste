@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-/**
- * Input type for creating consultations
- */
 public class ConsultaInput {
     
     @NotNull(message = "Data da consulta é obrigatória")

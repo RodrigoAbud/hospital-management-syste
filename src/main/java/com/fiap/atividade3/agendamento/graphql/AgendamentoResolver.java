@@ -15,10 +15,6 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
 
-/**
- * GraphQL Resolver para operações de agendamento
- * Faz parte do serviço de agendamento na arquitetura de microserviços lógicos
- */
 @Controller
 public class AgendamentoResolver {
 
@@ -34,9 +30,6 @@ public class AgendamentoResolver {
     @Autowired
     private EnfermeiroRepository enfermeiroRepository;
 
-    /**
-     * Criar nova consulta via GraphQL
-     */
     @MutationMapping
     public Consulta criarConsulta(@Argument ConsultaInput input) {
         Consulta consulta = new Consulta();
@@ -66,9 +59,6 @@ public class AgendamentoResolver {
         return agendamentoService.criarConsulta(consulta);
     }
 
-    /**
-     * Atualizar consulta existente via GraphQL
-     */
     @MutationMapping
     public Consulta atualizarConsulta(@Argument Long id, @Argument ConsultaInput input) {
         Consulta consultaAtualizada = new Consulta();
@@ -79,9 +69,6 @@ public class AgendamentoResolver {
         return agendamentoService.atualizarConsulta(id, consultaAtualizada);
     }
 
-    /**
-     * Deletar consulta via GraphQL
-     */
     @MutationMapping
     public Boolean deletarConsulta(@Argument Long id) {
         try {

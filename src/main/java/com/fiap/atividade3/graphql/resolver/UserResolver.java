@@ -14,9 +14,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-/**
- * GraphQL resolver for user management operations
- */
 @Controller
 public class UserResolver {
 

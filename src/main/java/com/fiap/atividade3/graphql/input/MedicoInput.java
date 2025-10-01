@@ -4,9 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-/**
- * Input type for doctor registration
- */
 public class MedicoInput {
     
     @NotBlank(message = "Nome é obrigatório")

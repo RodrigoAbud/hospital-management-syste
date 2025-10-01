@@ -1,8 +1,6 @@
 package com.fiap.atividade3.model.enums;
 
-/**
- * Enum representing the different user roles in the hospital management system
- */
+
 public enum UserRole {
     MEDICO("ROLE_MEDICO", "Médico - pode visualizar e editar histórico de consultas"),
     ENFERMEIRO("ROLE_ENFERMEIRO", "Enfermeiro - pode registrar consultas e acessar histórico"),

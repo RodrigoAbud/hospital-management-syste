@@ -21,9 +21,6 @@ import org.springframework.stereotype.Controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * GraphQL resolver for consultation operations
- */
 @Controller
 public class ConsultaResolver {
 
@@ -46,68 +43,45 @@ public class ConsultaResolver {
     @Autowired
     private EnfermeiroRepository enfermeiroRepository;
 
-    /**
-     * Get consultation by ID
-     */
     @QueryMapping
     public Consulta consulta(@Argument Long id) {
         Usuario usuario = getCurrentUser();
         return agendamentoService.buscarConsultaPorId(id, usuario);
     }
 
-    /**
-     * Get current user's consultations (for patients)
-     */
+
     @QueryMapping
     public List<Consulta> minhasConsultas() {
         Usuario usuario = getCurrentUser();
         return historicoService.buscarConsultasPorPaciente(usuario.getId(), usuario);
     }
 
-    /**
-     * Get consultations by patient ID
-     */
     @QueryMapping
     public List<Consulta> consultasPorPaciente(@Argument Long pacienteId) {
         Usuario usuario = getCurrentUser();
         return historicoService.buscarConsultasPorPaciente(pacienteId, usuario);
     }
 
-    /**
-     * Get consultations by doctor ID
-     */
     @QueryMapping
     public List<Consulta> consultasPorMedico(@Argument Long medicoId) {
         return historicoService.buscarConsultasPorMedico(medicoId);
     }
 
-    /**
-     * Get all consultations (medical staff only)
-     */
     @QueryMapping
     public List<Consulta> todasConsultas() {
         return historicoService.buscarTodasConsultas();
     }
 
-    /**
-     * Get recent consultations (last 30 days)
-     */
     @QueryMapping
     public List<Consulta> consultasRecentes() {
         return historicoService.buscarConsultasRecentes();
     }
 
-    /**
-     * Get consultations by date range
-     */
     @QueryMapping
     public List<Consulta> consultasPorPeriodo(@Argument LocalDateTime inicio, @Argument LocalDateTime fim) {
         return historicoService.buscarConsultasPorPeriodo(inicio, fim);
     }
 
-    /**
-     * Create new consultation
-     */
     @MutationMapping
     public Consulta criarConsulta(@Argument ConsultaInput input) {
         Consulta consulta = new Consulta();
@@ -131,9 +105,6 @@ public class ConsultaResolver {
         return agendamentoService.criarConsulta(consulta);
     }
 
-    /**
-     * Update consultation
-     */
     @MutationMapping
     public Consulta atualizarConsulta(@Argument Long id, @Argument ConsultaUpdateInput input) {
         Consulta consultaAtualizada = new Consulta();
@@ -144,9 +115,6 @@ public class ConsultaResolver {
         return agendamentoService.atualizarConsulta(id, consultaAtualizada);
     }
 
-    /**
-     * Delete consultation
-     */
     @MutationMapping
     public Boolean deletarConsulta(@Argument Long id) {
         try {

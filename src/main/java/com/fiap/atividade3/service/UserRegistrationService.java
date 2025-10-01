@@ -18,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-/**
- * Service for user registration operations
- */
+
 @Service
 @Transactional
 public class UserRegistrationService {
@@ -40,9 +38,7 @@ public class UserRegistrationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Register a new medico
-     */
+
     public Medico registrarMedico(MedicoInput input) {
         // Check if email already exists
         if (usuarioRepository.existsByEmail(input.getEmail())) {
@@ -67,9 +63,7 @@ public class UserRegistrationService {
         return medicoRepository.save(medico);
     }
 
-    /**
-     * Register a new enfermeiro
-     */
+
     public Enfermeiro registrarEnfermeiro(EnfermeiroInput input) {
         // Check if email already exists
         if (usuarioRepository.existsByEmail(input.getEmail())) {
@@ -94,9 +88,7 @@ public class UserRegistrationService {
         return enfermeiroRepository.save(enfermeiro);
     }
 
-    /**
-     * Register a new paciente
-     */
+
     public Paciente registrarPaciente(PacienteInput input) {
         // Check if email already exists
         if (usuarioRepository.existsByEmail(input.getEmail())) {

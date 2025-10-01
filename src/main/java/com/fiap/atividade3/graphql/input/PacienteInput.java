@@ -6,9 +6,6 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-/**
- * Input type for patient registration
- */
 public class PacienteInput {
     
     @NotBlank(message = "Nome é obrigatório")

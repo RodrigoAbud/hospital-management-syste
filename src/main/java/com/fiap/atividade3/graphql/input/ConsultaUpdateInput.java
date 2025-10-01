@@ -1,8 +1,5 @@
 package com.fiap.atividade3.graphql.input;
 
-/**
- * Input type for updating consultations
- */
 public class ConsultaUpdateInput {
     
     private String diagnostico;

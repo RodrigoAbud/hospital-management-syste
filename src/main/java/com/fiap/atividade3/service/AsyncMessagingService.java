@@ -9,9 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Service for handling asynchronous messaging between services
- */
+
 @Service
 public class AsyncMessagingService {
 
@@ -20,9 +18,7 @@ public class AsyncMessagingService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    /**
-     * Publish consultation created event
-     */
+
     public void publishConsultaCreated(Consulta consulta) {
         try {
             logger.info("Publishing consultation created event for consultation ID: {}", consulta.getId());
@@ -36,9 +32,7 @@ public class AsyncMessagingService {
         }
     }
 
-    /**
-     * Publish consultation updated event
-     */
+
     public void publishConsultaUpdated(Consulta consulta) {
         try {
             logger.info("Publishing consultation updated event for consultation ID: {}", consulta.getId());
@@ -52,9 +46,7 @@ public class AsyncMessagingService {
         }
     }
 
-    /**
-     * Handle consultation created events
-     */
+
     @RabbitListener(queues = AsyncConfig.CONSULTA_CREATED_QUEUE)
     public void handleConsultaCreated(Consulta consulta) {
         logger.info("Received consultation created event for consultation ID: {}", consulta.getId());
@@ -72,9 +64,7 @@ public class AsyncMessagingService {
                    consulta.getDataConsulta());
     }
 
-    /**
-     * Handle consultation updated events
-     */
+
     @RabbitListener(queues = AsyncConfig.CONSULTA_UPDATED_QUEUE)
     public void handleConsultaUpdated(Consulta consulta) {
         logger.info("Received consultation updated event for consultation ID: {}", consulta.getId());

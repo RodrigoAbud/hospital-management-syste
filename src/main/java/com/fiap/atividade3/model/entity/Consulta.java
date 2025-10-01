@@ -7,9 +7,6 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-/**
- * Entity representing a medical consultation in the hospital management system
- */
 @Entity
 @Table(name = "consultas")
 public class Consulta {
