@@ -31,7 +31,7 @@ public class AgendamentoResolver {
     private EnfermeiroRepository enfermeiroRepository;
 
     @MutationMapping
-    public Consulta criarConsulta(@Argument ConsultaInput input) {
+    public Consulta criarConsultaAgendamento(@Argument ConsultaInput input) {
         Consulta consulta = new Consulta();
         
         // Buscar entidades relacionadas
@@ -60,7 +60,7 @@ public class AgendamentoResolver {
     }
 
     @MutationMapping
-    public Consulta atualizarConsulta(@Argument Long id, @Argument ConsultaInput input) {
+    public Consulta atualizarConsultaAgendamento(@Argument Long id, @Argument ConsultaInput input) {
         Consulta consultaAtualizada = new Consulta();
         consultaAtualizada.setDiagnostico(input.getDiagnostico());
         consultaAtualizada.setPrescricao(input.getPrescricao());
@@ -70,7 +70,7 @@ public class AgendamentoResolver {
     }
 
     @MutationMapping
-    public Boolean deletarConsulta(@Argument Long id) {
+    public Boolean deletarConsultaAgendamento(@Argument Long id) {
         try {
             agendamentoService.deletarConsulta(id);
             return true;
