@@ -487,7 +487,3 @@ Para deploy em produção:
 3. Commit suas mudanças
 4. Push para a branch
 5. Abra um Pull Request
-
-## Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
